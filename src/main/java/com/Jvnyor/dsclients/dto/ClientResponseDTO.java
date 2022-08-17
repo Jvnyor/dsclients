@@ -3,33 +3,21 @@ package com.Jvnyor.dsclients.dto;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import com.Jvnyor.dsclients.entities.Client;
 
-public class ClientDTO {
+public class ClientResponseDTO {
 
-	@NotNull
 	private Long id;
-	@NotNull
-	@NotEmpty
 	private String name;
-	@NotNull
-	@NotEmpty
 	private String cpf;
-	@NotNull
 	private Double income;
-	@NotNull
-	@NotEmpty
 	private String birthDate;
-	@NotNull
 	private Integer children;
 
-	public ClientDTO() {
+	public ClientResponseDTO() {
 	}
 
-	public ClientDTO(Long id, String name, String cpf, Double income, String birthDate, Integer children) {
+	public ClientResponseDTO(Long id, String name, String cpf, Double income, String birthDate, Integer children) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -38,7 +26,7 @@ public class ClientDTO {
 		this.children = children;
 	}
 	
-	public ClientDTO(Client entity) {
+	public ClientResponseDTO(Client entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.cpf = entity.getCpf();
@@ -108,7 +96,7 @@ public class ClientDTO {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ClientDTO other = (ClientDTO) obj;
+		ClientResponseDTO other = (ClientResponseDTO) obj;
 		return Objects.equals(id, other.id) && Objects.equals(cpf, other.cpf);
 	}
 	

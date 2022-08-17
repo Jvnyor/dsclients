@@ -1,53 +1,44 @@
-package com.Jvnyor.dsclients.entities;
+package com.Jvnyor.dsclients.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-import com.Jvnyor.dsclients.dto.ClientRequestDTO;
+import org.hibernate.validator.constraints.Length;
 
-@Entity
-public class Client {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class ClientRequestDTO {
+
+	@NotNull
+	@NotEmpty
+	@Schema(example = "Nome Sobrenome")
 	private String name;
+	@NotNull
+	@NotEmpty
+	@Schema(example = "12345678910", minLength = 11, maxLength = 11)
+	@Length(max = 11, min = 11)
 	private String cpf;
+	@NotNull
+	@Schema(example = "3000.00")
 	private Double income;
+	@NotNull
 	private LocalDate birthDate;
+	@NotNull
+	@Schema(example = "1")
 	private Integer children;
 
-	public Client() {
+	public ClientRequestDTO() {
 	}
 
-	public Client(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
-		this.id = id;
+	public ClientRequestDTO(String name, String cpf, Double income, LocalDate birthDate, Integer children) {
 		this.name = name;
 		this.cpf = cpf;
 		this.income = income;
 		this.birthDate = birthDate;
 		this.children = children;
-	}
-
-	public Client(ClientRequestDTO dto) {
-		this.name = dto.getName();
-		this.cpf = dto.getCpf();
-		this.income = dto.getIncome();
-		this.birthDate = dto.getBirthDate();
-		this.children = dto.getChildren();
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -92,7 +83,7 @@ public class Client {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, cpf);
+		return Objects.hash(cpf);
 	}
 
 	@Override
@@ -103,8 +94,8 @@ public class Client {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
-		return Objects.equals(id, other.id) && Objects.equals(cpf, other.cpf);
+		ClientRequestDTO other = (ClientRequestDTO) obj;
+		return Objects.equals(cpf, other.cpf);
 	}
-
+	
 }

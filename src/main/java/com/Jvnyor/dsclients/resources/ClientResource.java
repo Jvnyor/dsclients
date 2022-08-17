@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Jvnyor.dsclients.dto.ClientDTO;
+import com.Jvnyor.dsclients.dto.ClientRequestDTO;
+import com.Jvnyor.dsclients.dto.ClientResponseDTO;
 import com.Jvnyor.dsclients.services.ClientService;
 
 @RestController
@@ -27,7 +28,7 @@ public class ClientResource {
 	private ClientService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<ClientDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<ClientResponseDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
 			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
@@ -36,17 +37,17 @@ public class ClientResource {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
+	public ResponseEntity<ClientResponseDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
 
 	@PostMapping
-	public ResponseEntity<ClientDTO> save(@RequestBody ClientDTO dto) {
+	public ResponseEntity<ClientResponseDTO> save(@RequestBody ClientRequestDTO dto) {
 		return new ResponseEntity<>(service.save(dto), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
+	public ResponseEntity<ClientResponseDTO> update(@PathVariable Long id, @RequestBody ClientRequestDTO dto) {
 		return ResponseEntity.ok(service.update(id, dto));
 	}
 	
