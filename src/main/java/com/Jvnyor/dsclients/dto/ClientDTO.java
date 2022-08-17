@@ -1,31 +1,35 @@
-package com.Jvnyor.dsclients.entities;
+package com.Jvnyor.dsclients.dto;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
-import com.Jvnyor.dsclients.dto.ClientDTO;
+import com.Jvnyor.dsclients.entities.Client;
 
-@Entity
-public class Client {
+public class ClientDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@NotNull
 	private Long id;
+	@NotNull
+	@NotEmpty
 	private String name;
+	@NotNull
+	@NotEmpty
 	private String cpf;
+	@NotNull
 	private Double income;
-	private LocalDate birthDate;
+	@NotNull
+	@NotEmpty
+	private String birthDate;
+	@NotNull
 	private Integer children;
 
-	public Client() {
+	public ClientDTO() {
 	}
 
-	public Client(Long id, String name, String cpf, Double income, LocalDate birthDate, Integer children) {
+	public ClientDTO(Long id, String name, String cpf, Double income, String birthDate, Integer children) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -33,16 +37,16 @@ public class Client {
 		this.birthDate = birthDate;
 		this.children = children;
 	}
-
-	public Client(ClientDTO dto) {
-		this.id = dto.getId();
-		this.name = dto.getName();
-		this.cpf = dto.getCpf();
-		this.income = dto.getIncome();
-		this.birthDate = LocalDate.parse(dto.getBirthDate());
-		this.children = dto.getChildren();
-	}
 	
+	public ClientDTO(Client entity) {
+		this.id = entity.getId();
+		this.name = entity.getName();
+		this.cpf = entity.getCpf();
+		this.income = entity.getIncome();
+		this.birthDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(entity.getBirthDate());
+		this.children = entity.getChildren();
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -75,11 +79,11 @@ public class Client {
 		this.income = income;
 	}
 
-	public LocalDate getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(LocalDate birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -104,8 +108,8 @@ public class Client {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Client other = (Client) obj;
+		ClientDTO other = (ClientDTO) obj;
 		return Objects.equals(id, other.id) && Objects.equals(cpf, other.cpf);
 	}
-
+	
 }
