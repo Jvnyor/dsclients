@@ -1,10 +1,11 @@
 package com.Jvnyor.dsclients.resources;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.Jvnyor.dsclients.dto.ClientRequestDTO;
 import com.Jvnyor.dsclients.dto.ClientResponseDTO;
@@ -40,10 +42,21 @@ public class ClientResource {
 	public ResponseEntity<ClientResponseDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
+	
+	@GetMapping("/cpf/{cpf}")
+	public ResponseEntity<ClientResponseDTO> findByCpf(@PathVariable String cpf) {
+		return ResponseEntity.ok(service.findByCpfReturnsDTO(cpf));
+	}
 
 	@PostMapping
 	public ResponseEntity<ClientResponseDTO> save(@RequestBody ClientRequestDTO dto) {
-		return new ResponseEntity<>(service.save(dto), HttpStatus.CREATED);
+		ClientResponseDTO clientToSave = service.save(dto);
+		URI uri = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(clientToSave.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(clientToSave);
 	}
 	
 	@PutMapping("/{id}")
